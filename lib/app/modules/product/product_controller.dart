@@ -1,12 +1,11 @@
 import 'package:e_commerce_app/app/core/base/base_controller.dart';
-import 'package:e_commerce_app/app/helper/ex_log.dart';
+import 'package:e_commerce_app/app/helper/loading_helper.dart';
 import 'package:e_commerce_app/app/model/products_entity.dart';
 import 'package:e_commerce_app/app/modules/product/product_repository.dart';
 import 'package:get/get.dart';
 
-class ProductController extends BaseController<ProductRepository> {
+class ProductController extends BaseController<ProductRepository> with StateMixin<ProductsEntity> {
   final id = ''.obs;
-  final data = ProductsEntity().obs;
 
   @override
   void onInit() {
@@ -21,11 +20,15 @@ class ProductController extends BaseController<ProductRepository> {
   }
 
   Future<void> _getDetailProduct(String id) async {
+    LoadingHelper.show();
+    change(null, status: RxStatus.loading());
     await repo.getProduct(id).then((value) {
+      LoadingHelper.dismiss();
       final response = ProductsEntity.fromJson(value.body as Map<String, dynamic>);
-      data.value = response;
+      change(response, status: RxStatus.success());
     }).catchError((dynamic error) {
-      logE(error);
+      LoadingHelper.dismiss();
+      change(null, status: RxStatus.error('$error'));
     });
   }
 }

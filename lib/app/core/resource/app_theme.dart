@@ -4,5 +4,6 @@ import 'package:flutter/material.dart';
 mixin AppThemes {
   static final theme = ThemeData(
     primaryColor: colorUfoGreen,
+    colorScheme: ColorScheme.light(primary: colorUfoGreen),
   );
 }

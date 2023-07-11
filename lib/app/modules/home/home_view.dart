@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/app/core/resource/app_color.dart';
 import 'package:e_commerce_app/app/widget/ex_textfield_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,7 @@ class HomeView extends GetView<HomeController> {
               ),
               child: InkWell(
                 borderRadius: BorderRadius.circular(1000),
-                onTap: () {},
+                onTap: () => controller.goToNotification(),
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: Icon(
@@ -55,7 +56,7 @@ class HomeView extends GetView<HomeController> {
               ),
               child: InkWell(
                 borderRadius: BorderRadius.circular(1000),
-                onTap: () {},
+                onTap: () => controller.goToCart(),
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: ZStack([
@@ -89,35 +90,44 @@ class HomeView extends GetView<HomeController> {
         SizedBox(height: 48),
         ExTextFieldIcon(
           hint: 'Search',
+          tfController: controller.searchController,
           prefixIcon: Icons.search_rounded,
+          onChanged: (text) => controller.searchData(text),
         ),
         SizedBox(height: 16),
         Obx(
-          () => SizedBox(
-            height: 40,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              separatorBuilder: (context, index) => SizedBox(width: 8),
-              itemBuilder: (context, index) => DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade200, width: 2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  controller.category[index].capitalized,
-                  style: GoogleFonts.roboto(
-                    fontSize: 14,
-                    color: Colors.grey.shade500,
+          () => controller.isLoading.value
+              ? SizedBox()
+              : SizedBox(
+                  height: 40,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (context, index) => SizedBox(width: 8),
+                    itemBuilder: (context, index) => Obx(
+                      () => DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: controller.selectedCategory.value == controller.category[index] ? colorUfoGreen : Colors.transparent,
+                          border: Border.all(color: controller.selectedCategory.value == controller.category[index] ? colorUfoGreen : Colors.grey.shade200, width: 2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          controller.category[index].capitalized,
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            color: controller.selectedCategory.value == controller.category[index] ? Colors.white : Colors.grey.shade500,
+                          ),
+                        ).pSymmetric(v: 4, h: 16).centered().onInkTap(() => controller.filterData(index)),
+                      ),
+                    ),
+                    itemCount: controller.category.length,
                   ),
-                ).pSymmetric(v: 4, h: 16).centered().onInkTap(() {}),
-              ),
-              itemCount: controller.category.length,
-            ),
-          ),
+                ),
         ),
         SizedBox(height: 16),
         Obx(
-          () => GridView.builder(
+          () => controller.isLoading.value
+              ? SizedBox()
+              : GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 4,
@@ -135,7 +145,10 @@ class HomeView extends GetView<HomeController> {
                 elevation: 3,
                 child: VStack([
                   ClipRRect(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
                     child: Image.network(
                       item.image ?? '',
                       height: 150,
