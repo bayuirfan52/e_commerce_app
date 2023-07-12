@@ -86,6 +86,24 @@ class CheckoutView extends GetView<CheckoutController> {
       bottomNavigationBar: VStack([
         HStack([
           Text(
+            'Current Payment Method',
+            style: GoogleFonts.roboto(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Spacer(),
+          Text(
+            'QRIS',
+            style: GoogleFonts.roboto(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ]),
+        SizedBox(height: 8),
+        HStack([
+          Text(
             'Total Payment',
             style: GoogleFonts.roboto(
               fontSize: 18,
@@ -103,27 +121,9 @@ class CheckoutView extends GetView<CheckoutController> {
             ),
           )
         ]),
-        SizedBox(height: 8),
-        HStack([
-          Text(
-            'Current Payment Method',
-            style: GoogleFonts.roboto(
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          Spacer(),
-          Text(
-            'QRIS',
-            style: GoogleFonts.roboto(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ]),
         SizedBox(height: 24),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () => controller.goToPayment(),
           style: ButtonStyle(
             shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
               RoundedRectangleBorder(

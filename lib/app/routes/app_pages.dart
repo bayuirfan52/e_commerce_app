@@ -8,6 +8,8 @@ import '../modules/home/home_binding.dart';
 import '../modules/home/home_view.dart';
 import '../modules/notification/notification_binding.dart';
 import '../modules/notification/notification_view.dart';
+import '../modules/payment/payment_binding.dart';
+import '../modules/payment/payment_view.dart';
 import '../modules/product/product_binding.dart';
 import '../modules/product/product_view.dart';
 
@@ -24,25 +26,30 @@ class AppPages {
       page: () => const HomeView(),
       binding: HomeBinding(),
     ),
-    GetPage(
+    GetPage<dynamic>(
       name: Routes.PRODUCT,
       page: () => const ProductView(),
       binding: ProductBinding(),
     ),
-    GetPage(
+    GetPage<dynamic>(
       name: Routes.CART,
       page: () => const CartView(),
       binding: CartBinding(),
     ),
-    GetPage(
+    GetPage<dynamic>(
       name: Routes.NOTIFICATION,
       page: () => const NotificationView(),
       binding: NotificationBinding(),
     ),
-    GetPage(
+    GetPage<dynamic>(
       name: Routes.CHECKOUT,
       page: () => const CheckoutView(),
       binding: CheckoutBinding(),
+    ),
+    GetPage<dynamic>(
+      name: Routes.PAYMENT,
+      page: () => const PaymentView(),
+      binding: PaymentBinding(),
     ),
   ];
 }

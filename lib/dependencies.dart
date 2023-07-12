@@ -33,6 +33,6 @@ class Dependencies {
     await Hive.initFlutter(dir.path);
     Hive.registerAdapter(ProductsEntityAdapter());
     Hive.registerAdapter(ProductsRatingAdapter());
-    await Hive.openBox(productBox);
+    await Hive.openBox<dynamic>(productBox);
   }
 }

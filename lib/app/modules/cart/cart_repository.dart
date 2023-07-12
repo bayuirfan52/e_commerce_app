@@ -5,9 +5,9 @@ import 'package:hive/hive.dart';
 class CartRepository extends BaseRepository {
 
   Future<void> removeProduct(ProductsEntity product) async {
-    final box = await Hive.openBox('products');
+    final box = await Hive.openBox<dynamic>('products');
     final productBox = box.toMap();
-    var selectedKey;
+    dynamic selectedKey;
     productBox.forEach((key, value) {
       if (value['id'] == product.id) {
         selectedKey = key;
@@ -19,7 +19,7 @@ class CartRepository extends BaseRepository {
   }
 
   Future<List<ProductsEntity>> getCartData() async {
-    final box = await Hive.openBox('products');
+    final box = await Hive.openBox<dynamic>('products');
     final list = <ProductsEntity>[];
     for (var i = 0; i < box.length ; i++) {
       final item = box.getAt(i);

@@ -12,8 +12,7 @@ class CartView extends GetView<CartController> {
   const CartView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
@@ -143,7 +142,6 @@ class CartView extends GetView<CartController> {
         ),
       ),
     );
-  }
 
   void alert(Function callback) {
     Get.dialog<dynamic>(

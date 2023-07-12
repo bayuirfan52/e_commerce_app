@@ -7,13 +7,13 @@ class ProductRepository extends BaseRepository {
   Future<Outcome> getProduct(String id) => apiService.httpGet(endPoint: 'products/$id');
 
   Future<void> addProductToCart(ProductsEntity product) async {
-    final box = await Hive.openBox('products');
+    final box = await Hive.openBox<dynamic>('products');
     await box.add(product.toJson());
     await box.close();
   }
 
   Future<List<ProductsEntity>> getCartData() async {
-    final box = await Hive.openBox('products');
+    final box = await Hive.openBox<dynamic>('products');
     final list = <ProductsEntity>[];
     for (var i = 0; i < box.length ; i++) {
       final item = box.getAt(i);

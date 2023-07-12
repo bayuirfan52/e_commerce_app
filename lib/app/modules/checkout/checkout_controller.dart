@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/app/model/products_entity.dart';
+import 'package:e_commerce_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class CheckoutController extends GetxController {
@@ -18,4 +19,6 @@ class CheckoutController extends GetxController {
       totalPayment.value += element.price ?? 0.0;
     });
   }
+
+  void goToPayment() => Get.toNamed<dynamic>(Routes.PAYMENT, arguments: totalPayment.value);
 }

@@ -44,7 +44,7 @@ class NotificationView extends GetView<NotificationController> {
         itemBuilder: (context, index) => ListTile(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: colorBorder)
+            side: BorderSide(color: colorBorder),
           ),
           leading: Icon(Icons.notifications_none),
           title: Text('New Product of ${Faker().vehicle.model()}'),

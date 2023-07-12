@@ -9,4 +9,5 @@ abstract class Routes {
   static const CART = '/cart';
   static const NOTIFICATION = '/notification';
   static const CHECKOUT = '/checkout';
+  static const PAYMENT = '/payment';
 }
