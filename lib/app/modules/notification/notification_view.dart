@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/app/core/resource/app_color.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class NotificationView extends GetView<NotificationController> {
           overflow: TextOverflow.fade,
           style: GoogleFonts.roboto(
             color: Colors.black,
+            fontSize: 20,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -45,7 +47,7 @@ class NotificationView extends GetView<NotificationController> {
             side: BorderSide(color: colorBorder)
           ),
           leading: Icon(Icons.notifications_none),
-          title: Text('Anda Mendapatkan ${index + 1} Notifikasi'),
+          title: Text('New Product of ${Faker().vehicle.model()}'),
           onTap: (){},
         ),
         itemCount: 5,

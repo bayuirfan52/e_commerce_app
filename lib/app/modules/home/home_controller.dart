@@ -11,6 +11,7 @@ class HomeController extends BaseController<HomeRepository> {
   final category = <String>[].obs;
   final products = <ProductsEntity>[].obs;
   final allProducts = <ProductsEntity>[].obs;
+  final cart = <ProductsEntity>[].obs;
   final selectedCategory = ''.obs;
   final searchController = TextEditingController();
   final isLoading = false.obs;
@@ -24,30 +25,31 @@ class HomeController extends BaseController<HomeRepository> {
   void onReady() {
     super.onReady();
     getProducts();
+    _getCart();
   }
 
-  void goToDetailProduct(String id) => Get.toNamed<dynamic>(Routes.PRODUCT, arguments: id);
+  void goToDetailProduct(String id) => Get.toNamed<dynamic>(Routes.PRODUCT, arguments: id)?.then((value) => _getCart());
   void goToNotification() => Get.toNamed<dynamic>(Routes.NOTIFICATION);
-  void goToCart() => Get.toNamed<dynamic>(Routes.CART);
+  void goToCart() => Get.toNamed<dynamic>(Routes.CART)?.then((value) => _getCart());
 
-  void filterData(int? index) {
+  void filterData(int index) {
     products.clear();
-    if (index == null) {
-      products.value = allProducts;
+    selectedCategory.value = category[index];
+    if (index == 0) {
+      products.addAll(allProducts);
     } else {
-      selectedCategory.value = category[index];
-      final data = allProducts;
-      products.value = data.filter((element) => selectedCategory.value == element.category).toList();
+      products.value = allProducts.filter((element) => selectedCategory.value == element.category).toList();
     }
+    update();
   }
 
   void searchData(String text) {
     products.clear();
     if (text.isEmptyOrNull) {
-      products.value = allProducts;
+      products.addAll(allProducts);
     } else {
-      final data = allProducts;
-      products.value = data.filter((element) => element.title?.toLowerCase().contains(text) ?? true).toList();
+      products.value = allProducts.filter((element) => element.title?.toLowerCase().contains(text) ?? true).toList();
+      update();
     }
   }
 
@@ -55,6 +57,7 @@ class HomeController extends BaseController<HomeRepository> {
     products.clear();
     allProducts.clear();
     category.clear();
+    category.add('All');
     isLoading.value = true;
     await repo.getProducts().then((value) {
       isLoading.value = false;
@@ -68,9 +71,14 @@ class HomeController extends BaseController<HomeRepository> {
         }
       });
       allProducts.addAll(products);
+      selectedCategory.value = category[0];
     }).catchError((dynamic error) {
       isLoading.value = false;
       logE(error);
     });
+  }
+
+  Future<void> _getCart() async {
+    cart.value = await repo.getCartData();
   }
 }

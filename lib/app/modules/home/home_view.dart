@@ -64,21 +64,26 @@ class HomeView extends GetView<HomeController> {
                       Icons.shopping_cart,
                       size: 24,
                     ),
-                    Positioned(
-                      left: 12,
-                      bottom: 12,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.red.shade400,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          '9+',
-                          style: GoogleFonts.roboto(
-                            fontSize: 10,
-                            color: Colors.white,
+                    Obx(
+                      () => Visibility(
+                        visible: controller.cart.isNotEmpty,
+                        child: Positioned(
+                          left: 12,
+                          bottom: 12,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade400,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              '${controller.cart.length > 9 ? '9+' : controller.cart.length}',
+                              style: GoogleFonts.roboto(
+                                fontSize: 10,
+                                color: Colors.white,
+                              ),
+                            ).p4(),
                           ),
-                        ).p4(),
+                        ),
                       ),
                     ),
                   ]),
@@ -128,59 +133,59 @@ class HomeView extends GetView<HomeController> {
           () => controller.isLoading.value
               ? SizedBox()
               : GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 4,
-              childAspectRatio: 5.1,
-              mainAxisSpacing: 4,
-              mainAxisExtent: 220,
-            ),
-            itemBuilder: (context, index) {
-              final item = controller.products[index];
-              return Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.grey.shade200),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                elevation: 3,
-                child: VStack([
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
-                    ),
-                    child: Image.network(
-                      item.image ?? '',
-                      height: 150,
-                      fit: BoxFit.fitWidth,
-                    ).centered(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 4,
+                    childAspectRatio: 5.1,
+                    mainAxisSpacing: 4,
+                    mainAxisExtent: 220,
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    item.title ?? '',
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                  ).centered().marginSymmetric(horizontal: 8),
-                  SizedBox(height: 8),
-                  Text(
-                    'IDR 5.000,-',
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ).centered().marginSymmetric(horizontal: 8),
-                ]).pOnly(bottom: 8).onInkTap(() => controller.goToDetailProduct(item.id.toString())),
-              );
-            },
-            itemCount: controller.products.length,
-            physics: ClampingScrollPhysics(),
-            padding: EdgeInsets.zero,
-          ),
+                  itemBuilder: (context, index) {
+                    final item = controller.products[index];
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.grey.shade200),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      elevation: 3,
+                      child: VStack([
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16),
+                          ),
+                          child: Image.network(
+                            item.image ?? '',
+                            height: 150,
+                            fit: BoxFit.fitWidth,
+                          ).centered(),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          item.title ?? '',
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
+                        ).centered().marginSymmetric(horizontal: 8),
+                        SizedBox(height: 8),
+                        Text(
+                          '\$ ${item.price}',
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ).centered().marginSymmetric(horizontal: 8),
+                      ]).pOnly(bottom: 8).onInkTap(() => controller.goToDetailProduct(item.id.toString())),
+                    );
+                  },
+                  itemCount: controller.products.length,
+                  physics: ClampingScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                ),
         ).expand(),
       ]).p24(),
     );

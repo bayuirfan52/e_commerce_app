@@ -1,14 +1,20 @@
 import 'package:e_commerce_app/app/core/base/base_repository.dart';
-import 'package:e_commerce_app/app/core/networking/http.dart';
 import 'package:e_commerce_app/app/model/products_entity.dart';
 import 'package:hive/hive.dart';
 
-class ProductRepository extends BaseRepository {
-  Future<Outcome> getProduct(String id) => apiService.httpGet(endPoint: 'products/$id');
+class CartRepository extends BaseRepository {
 
-  Future<void> addProductToCart(ProductsEntity product) async {
+  Future<void> removeProduct(ProductsEntity product) async {
     final box = await Hive.openBox('products');
-    await box.add(product.toJson());
+    final productBox = box.toMap();
+    var selectedKey;
+    productBox.forEach((key, value) {
+      if (value['id'] == product.id) {
+        selectedKey = key;
+      }
+    });
+
+    await box.delete(selectedKey);
     await box.close();
   }
 

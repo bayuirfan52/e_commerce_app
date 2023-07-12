@@ -24,7 +24,7 @@ class ProductView extends GetView<ProductController> {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            Get.back<dynamic>();
+            Get.back<bool>(result: true);
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -42,7 +42,7 @@ class ProductView extends GetView<ProductController> {
               ),
               child: InkWell(
                 borderRadius: BorderRadius.circular(1000),
-                onTap: () {},
+                onTap: () => controller.goToCart(),
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: ZStack([
@@ -51,21 +51,26 @@ class ProductView extends GetView<ProductController> {
                       size: 24,
                       color: Colors.black,
                     ),
-                    Positioned(
-                      left: 12,
-                      bottom: 12,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.red.shade400,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          '9+',
-                          style: GoogleFonts.roboto(
-                            fontSize: 10,
-                            color: Colors.white,
+                    Obx(
+                      () => Visibility(
+                        visible: controller.cart.isNotEmpty,
+                        child: Positioned(
+                          left: 12,
+                          bottom: 12,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade400,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              '${controller.cart.length > 9 ? '9+' : controller.cart.length}',
+                              style: GoogleFonts.roboto(
+                                fontSize: 10,
+                                color: Colors.white,
+                              ),
+                            ).p4(),
                           ),
-                        ).p4(),
+                        ),
                       ),
                     ),
                   ]).centered(),
@@ -171,27 +176,55 @@ class ProductView extends GetView<ProductController> {
             ),
           ),
           Spacer(),
-          ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+          Obx(
+            () => Visibility(
+              visible: controller.isProductOnCart.value,
+              child: ElevatedButton(
+                onPressed: null,
+                style: ButtonStyle(
+                  shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'Added to Cart',
+                  style: GoogleFonts.roboto(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
-            child: Text(
-              'Add to Cart',
-              style: GoogleFonts.roboto(
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
+          ),
+          Obx(
+            () => Visibility(
+              visible: !controller.isProductOnCart.value,
+              child: ElevatedButton(
+                onPressed: () => controller.addToCart(),
+                style: ButtonStyle(
+                  shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'Add to Cart',
+                  style: GoogleFonts.roboto(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
           ),
           SizedBox(width: 8),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () => controller.goToCheckout(),
             style: ButtonStyle(
               shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -207,7 +240,7 @@ class ProductView extends GetView<ProductController> {
                 fontSize: 16,
               ),
             ),
-          )
+          ),
         ]).p24(),
       ),
     );
