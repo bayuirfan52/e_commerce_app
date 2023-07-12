@@ -4,13 +4,16 @@ e commerce app test
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Project ini dibangun menggunakan:
+- flutter versi `v3.7.10`
+- `GetX` ekosistem.
+- `VelocityX` A minimalist Flutter framework for rapidly building custom designs.
+- `Hive` for database
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Development Guidelines :
+- Design Pattern **MVC**
+- Karna menggunakan `linter`, sebelum commit, pastikan check `Dart Analysis` count = 0, keep clean code sesuai anjuran flutter.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
